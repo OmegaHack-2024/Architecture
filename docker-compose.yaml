@@ -15,7 +15,7 @@ services:
       - mongodb-data:/data/db # Mounts the 'mongodb-data' volume to '/data/db' inside the container
     networks:
       # Specifies the networks the service can connect to
-      - ecodrive_network # The name of the network
+      - celsia_network # The name of the network
     restart: always # Always restart the container if it stops
 
   # EMQX Broker service
@@ -31,7 +31,7 @@ services:
       - "18083:18083" # EMQX Dashboard port
     networks:
       # Specifies the networks the service can connect to
-      - ecodrive_network # The name of the network
+      - celsia_network # The name of the network
     restart: always # Always restart the container if it stops
 
   # Redis service
@@ -45,7 +45,7 @@ services:
       - redisinsight:/data # Mounts the 'redisinsight' volume to '/data' inside the container
     networks:
       # Specifies the networks the service can connect to
-      - ecodrive_network # The name of the network
+      - celsia_network # The name of the network
     restart: always # Always restart the container if it stops
 
   # RedisInsight service
@@ -56,7 +56,7 @@ services:
       - "8001:8001" # Specifies the ports to expose
     networks:
       # Specifies the networks the service can connect to
-      - ecodrive_network # The name of the network
+      - celsia_network # The name of the network
     restart: always # Always restart the container if it stops
 
 networks:
