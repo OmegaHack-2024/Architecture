@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  # MongoDB service
+  mongodb:
+    image: mongo:latest # The Docker image to use for the MongoDB service
+    container_name: mongodb # The name of the MongoDB container
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    volumes:
+      # Specifies the directories to mount inside the container
+      - mongodb-data:/data/db # Mounts the 'mongodb-data' volume to '/data/db' inside the container
+    networks:
+      # Specifies the networks the service can connect to
+      - ecodrive_network # The name of the network
+    restart: always # Always restart the container if it stops
+
+  # EMQX Broker service
+  emqx:
+    image: emqx/emqx:latest # The Docker image to use for the EMQX service
+    container_name: emqx # The name of the EMQX container
+    ports:
+      # Specifies the ports to expose
+      - "1883:1883" # MQTT protocol port
+      - "8083:8083" # WebSocket for MQTT
+      - "8084:8084" # WSS (WebSocket Secure) for MQTT
+      - "8883:8883" # MQTTS (MQTT over SSL/TLS)
+      - "18083:18083" # EMQX Dashboard port
+    networks:
+      # Specifies the networks the service can connect to
+      - ecodrive_network # The name of the network
+    restart: always # Always restart the container if it stops
+
+  # Redis service
+  redis:
+    image: redis:latest # The Docker image to use for the Redis service
+    container_name: redis # The name of the Redis container
+    ports:
+      - "6379:6379" # Specifies the ports to expose
+    volumes:
+      # Specifies the directories to mount inside the container
+      - redisinsight:/data # Mounts the 'redisinsight' volume to '/data' inside the container
+    networks:
+      # Specifies the networks the service can connect to
+      - ecodrive_network # The name of the network
+    restart: always # Always restart the container if it stops
+
+  # RedisInsight service
+  redisinsight:
+    image: redislabs/redisinsight:latest # The Docker image to use for the RedisInsight service
+    container_name: redisinsight # The name of the RedisInsight container
+    ports:
+      - "8001:8001" # Specifies the ports to expose
+    networks:
+      # Specifies the networks the service can connect to
+      - ecodrive_network # The name of the network
+    restart: always # Always restart the container if it stops
+
+networks:
+  # Defines networks
+  celsia_network:
+    # The name of the network
+    external: true # Specifies that this network has been created externally and not by this file
+
+volumes:
+  # Defines volumes
+  mongodb-data: # The name of the volume
+  redisinsight: # The name of the volume
